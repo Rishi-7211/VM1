@@ -11,7 +11,7 @@ terraform {
     resource_group_name = "MotoRG"
     storage_account_name = "motostorageaccount98"
     container_name = "moto-container"
-    key = Dev.terraform.tfstate
+    key = terraform.tfstate
   }
 }
 
