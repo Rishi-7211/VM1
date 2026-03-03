@@ -1,5 +1,5 @@
 variable "resource_group_name" {
-  default = "MotoRG"
+  default = "MotoRG1212"
 }
 
 variable "location" {
