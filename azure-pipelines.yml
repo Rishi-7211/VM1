@@ -1,0 +1,41 @@
+trigger: none
+
+pool:
+  name: DevSecops_Agent
+
+variables:
+- group: New variable group 03-Mar
+
+stages:
+- stage: Terraform_Deploy
+  displayName: Deploy VM
+  jobs:
+  - job: Terraform
+    steps:
+
+    - task: TerraformInstaller@1
+      inputs:
+        terraformVersion: 'latest'
+
+    - task: TerraformTask@5
+      displayName: Terraform Init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)'
+        backendServiceArm: 'Azure_DevOps1'
+        backendAzureRmResourceGroupName: 'MotoRG'
+        backendAzureRmStorageAccountName: '$(rancho121)'
+        backendAzureRmContainerName: 'moto-container'
+        backendAzureRmKey: 'terraform.tfstate'
+
+    - task: TerraformTask@5
+      displayName: Terraform Apply
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)'
+        environmentServiceNameAzureRM: 'Azure_DevOps1'
+        commandOptions: >
+          -auto-approve
+          -var "admin_password=$(vm-password)"
